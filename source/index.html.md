@@ -22,30 +22,32 @@ This document outlines authentication, authorization and resource management for
 
 # Authentication
 
-Thread API uses API keys to allow access. This API key must remain a secret. Web clients are prohibited from using this API directly. Thread API expects the API key to be included in all API requests.
+Each API consumer is given a ID and a secret. As the name suggests, the secret must remain a secure secret and should never be delivered to a web client. Combine your ID and secret to create a base64 encoded authorization header and request an authorization JSON web token (JWT). This access token is valid for 1 hour.
 
-> To authorize, use this code:
+> To authenticate:
 
 ```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: superlongcharacterstring"
+echo -n 'YOUR_ID:YOUR_SECRET' | openssl base64
+
+curl -X POST \
+  https://threadapi.auth.us-west-2.amazoncognito.com/oauth2/token \
+  -H 'authorization: Basic ***********iMWl0NmY2MnVlZmVtNmFxaG46ajIyYTJ******HRjYm9yZGtucHR0Z2U0azI5cmE3czgwMjZhZ3J***************' \
+  -H 'content-type: application/x-www-form-urlencoded' \
+  -d 'grant_type=client_credentials'
 ```
 
-> Make sure to replace `superlongcharacterstring` with your API key.
+To register your organzation as an API consumer and receive your ID and secret, reach out to <info@threadcommunication.com>.
 
-To obtain an API key, reach out to <info@threadcommunication.com>
-
-If you believe your key has been made public or has been compromised, please reach out to <info@threadcommunication.com> immediately and we will generate a new key and invalidate your old key.
+If you believe your secret key has been made public or has been compromised, please reach out to <info@threadcommunication.com> immediately and we will generate a new key and invalidate your old one.
 
 # Authorization
 
-Many resources are available without special authorization. Resources marked with a 🔒 require additional authorization. All POST, PUT and DELETE requests require special authorization.
+Every API call must be accompanied by a valid authorization JWT.
 
-`Authorization: superlongcharacterstring`
+`Authorization: superlongtokenstring`
 
 <aside class="notice">
-You must replace <code>superlongcharacterstring</code> with your personal API key.
+You must replace <code>superlongtokenstring</code> with the access token returned from the step above.
 </aside>
 
 # OpenChair Scheduling API
@@ -73,7 +75,7 @@ Practices will have <code>bookings</code> or <code>range bookings</code> but not
 
 ```shell
 curl "https://api.threadcommunication.com/scheduling/practices"
-  -H "Authorization: superlongcharacterstring"
+  -H "Authorization: superlongtokenstring"
 ```
 
 > The above command returns JSON structured like this:
@@ -96,23 +98,22 @@ curl "https://api.threadcommunication.com/scheduling/practices"
 ]
 ```
 
-
 This endpoint returns all practices currently using OpenChair Scheduling.
 
 ### HTTP Request
 
 `GET https://api.threadcommunication.com/scheduling/practices`
 
-<!-- <aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside> -->
+<aside class="success">
+  The resources returned by this route are dictated by the level of access required for each integration partner. For instance, practice management systems will be able to retrieve all resources belonging to their customers. Other integration partners my require authorization on a practice-by-practice basis.
+</aside>
 
 
 ## Get an Individual Location
 
 ```shell
 curl "https://api.threadcommunication.com/scheduling/location/[:id]"
-  -H "Authorization: superlongcharacterstring"
+  -H "Authorization: superlongtokenstring"
 ```
 
 > The above command returns JSON structured like this:
@@ -143,7 +144,7 @@ This endpoint returns a location given a location id.
 
 ```shell
 curl "https://api.threadcommunication.com/onlinescheduling/practice/[:id]/bookings"
-  -H "Authorization: superlongcharacterstring"
+  -H "Authorization: superlongtokenstring"
 ```
 
 > The above command returns JSON structured like this:
@@ -155,7 +156,7 @@ curl "https://api.threadcommunication.com/onlinescheduling/practice/[:id]/bookin
     "status": "pending",
     "length": 60,
     "recurring": false,
-    "start_datetime": "2018-09-25T16:44:02.722-06:00",
+    "start_datetime": "2018-09-25T16:44:00.000-06:00",
     "location_id": "4DFDr",
     "doctor_id": "DD3456",
     "available_appointments": 2,
@@ -165,11 +166,11 @@ curl "https://api.threadcommunication.com/onlinescheduling/practice/[:id]/bookin
     "range_booking": false
   },
   {
-    "id": "2f4Dr",
-    "status": "pending",
-    "length": 60,
+    "id": "fdR344",
+    "status": "reserved",
+    "length": 45,
     "recurring": false,
-    "start_datetime": "2018-09-25T16:44:02.722-06:00",
+    "start_datetime": "2018-09-22T10:10:00.000-06:00",
     "location_id": "4DFDr",
     "doctor_id": "DD3456",
     "available_appointments": 2,
@@ -208,7 +209,7 @@ status | all | Specify booking of a specific status. For multiple statuses, use 
 
 ```shell
 curl "https://api.threadcommunication.com/onlinescheduling/locaiton/[:id]/bookings"
-  -H "Authorization: superlongcharacterstring"
+  -H "Authorization: superlongtokenstring"
 ```
 
 > The above command returns JSON structured like this:
@@ -220,19 +221,31 @@ curl "https://api.threadcommunication.com/onlinescheduling/locaiton/[:id]/bookin
     "status": "pending",
     "length": 60,
     "recurring": false,
+    "start_datetime": "2018-09-25T16:44:00.000-06:00",
     "location_id": "4DFDr",
-    "doctor_id": "DD3456", 
+    "doctor_id": "DD3456",
+    "available_appointments": 2,
+    "total_appointments": 3,
+    "updated_at": "2018-10-25T16:44:02.722-06:00",
+    "created_at": "2017-02-23T16:44:02.722-06:00",
+    "range_booking": false
   },
   {
-    "id": "2f4Dr",
-    "status": "pending",
-    "length": 60,
+    "id": "fdR344",
+    "status": "reserved",
+    "length": 45,
     "recurring": false,
+    "start_datetime": "2018-09-22T10:10:00.000-06:00",
     "location_id": "4DFDr",
-    "doctor_id": "DD3456", 
+    "doctor_id": "DD3456",
+    "available_appointments": 2,
+    "total_appointments": 3,
+    "range_booking": false,
+    "updated_at": "2018-10-25T16:44:02.722-06:00",
+    "created_at": "2017-02-23T16:44:02.722-06:00",
   },
   {
-    etc...
+    "etc": "etc..."
   }
 ]
 ```
@@ -261,7 +274,7 @@ status | all | Specify booking of a specific status. For multiple statuses use m
 
 ```shell
 curl "https://api.threadcommunication.com/onlinescheduling/booking/[:id]"
-  -H "Authorization: superlongcharacterstring"
+  -H "Authorization: superlongtokenstring"
 ```
 
 > The above command returns JSON structured like this:
@@ -294,9 +307,9 @@ ID | The ID of the booking to retrieve
 
 ```shell
 curl "https://api.threadcommunication.com/onlinescheduling/booking"
-  -H "Authorization: superlongcharacterstring"
+  -H "Authorization: superlongtokenstring"
   -H "Content-Type: application/json"
-  -d '{"id": "2f4Dr", "status": "pending", "length": 60, "recurring": false, "location_id": "4DFDr", "doctor_id": "DD3456",}'
+  -d '{"start": "2018-10-25T16:44:02.722-06:00","status": "pending","recurring": false,"range_booking": false,"length": 60,"location_id": "4DFDr","doctor_id":"DD3456",}'
   -X POST 
 ```
 
@@ -304,10 +317,11 @@ curl "https://api.threadcommunication.com/onlinescheduling/booking"
 
 ```json
 {
-  "id": "2f4Dr",
+  "start": "2018-10-25T16:44:02.722-06:00",
   "status": "pending",
-  "length": 60,
   "recurring": false,
+  "range_booking": false,
+  "length": 60,
   "location_id": "4DFDr",
   "doctor_id": "DD3456",
 }
@@ -321,6 +335,8 @@ curl "https://api.threadcommunication.com/onlinescheduling/booking"
   "status": "pending",
   "length": 60,
   "recurring": false,
+  "range_booking": false,
+  "start_datetime": "2018-10-25T16:44:02.722-06:00",
   "location_id": "4DFDr",
   "doctor_id": "DD3456",
 }
@@ -332,15 +348,31 @@ This endpoint creates a booking.
 
 `POST https://api.threadcommunication.com/onlinescheduling/booking`
 
+### Body Attributes
+
+Attribute | Description | Required? | Default
+--------- | ----------- | --------- | ----
+start | Regular booking: IANA datetime. Range booking, one of `early_morning`, `mid_morning`, `afternoon`, `late_afternoon`* | true | N/A
+status | One of `open`, `pending`, `reserved` or `booked`. See [above](#openchair-scheduling-api) for description. | false | pending
+recurring | True if the booking happens weekly | false | false
+range_booking | True if booking is a range booking* | false | false
+length | The length of the appointment in minutes | false | 60
+location_id | The id of the location where the appointment will take place | true | N/A
+doctor_id | The id of the doctor who will see the patient | true | N/A
+
+<aside class="notice">
+  *See <a href="#openchair-scheduling-api">above</a> for description of bookings vs. range bookings.
+</aside>
+
 
 ## Edit a Booking 🔒
 
 ```shell
 curl "https://api.threadcommunication.com/onlinescheduling/booking"
-  -H "Authorization: superlongcharacterstring"
+  -H "Authorization: superlongtokenstring"
   -H "Content-Type: application/json"
   -X PUT
-  -d '{"id": "2f4Dr", "status": "pending", "length": 60, "recurring": false, "location_id": "4DFDr", "doctor_id": "DD3456",}'
+  -d '{"status": "reserved"}'
 ```
 
 > The above command expects the body to be formatted like this:
@@ -359,8 +391,10 @@ curl "https://api.threadcommunication.com/onlinescheduling/booking"
   "status": "reserved",
   "length": 60,
   "recurring": false,
+  "range_booking": false,
+  "start_datetime": "2018-10-25T16:44:02.722-06:00",
   "location_id": "4DFDr",
-  "doctor_id": "DD3456", 
+  "doctor_id": "DD3456",
 }
 ```
 
@@ -368,7 +402,7 @@ This endpoint edits a booking. You can only edit bookings created using your API
 
 ### HTTP Request
 
-`POST https://api.threadcommunication.com/onlinescheduling/booking/[:id]`
+`PUT https://api.threadcommunication.com/onlinescheduling/booking/[:id]`
 
 ### URL Parameters
 
@@ -376,11 +410,26 @@ Parameter | Description
 --------- | -----------
 ID | The ID of the booking to edit
 
+Attribute | Description |
+--------- | ----------- | 
+start | Regular booking: IANA datetime. Range booking, one of `early_morning`, `mid_morning`, `afternoon`, `late_afternoon`*
+status | One of `open`, `pending`, `reserved` or `booked`. See [above](#openchair-scheduling-api) for description.
+recurring | True if the booking happens weekly
+range_booking | True if booking is a range booking*
+length | The length of the appointment in minutes
+location_id | The id of the location where the appointment will take place
+doctor_id | The id of the doctor who will see the patient
+
+<aside class="notice">
+  *See <a href="#openchair-scheduling-api">above</a> for description of bookings vs. range bookings.
+</aside>
+
+
 ## Delete a Booking 🔒
 
 ```shell
 curl "https://api.threadcommunication.com/onlinescheduling/booking/[:id]"
-  -H "Authorization: superlongcharacterstring"
+  -H "Authorization: superlongtokenstring"
   -X DELETE
 ```
 
