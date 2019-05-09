@@ -16,9 +16,9 @@ search: true
 
 # Introduction
 
-Thread API is an interface for developing integrations with Thread products. Currently, OpenChair Scheduling is the only product for which there is a publically available API. This API is organized around [REST](https://en.wikipedia.org/wiki/Representational_state_transfer). 
+Thread API is an interface for developing integrations with Thread products. Currently, Thread Online Scheduling is the only product for which there is a publically available API. This API is organized around [REST](https://en.wikipedia.org/wiki/Representational_state_transfer). 
 
-This document outlines authentication, authorization and resource management for OpenChair bookings within the Thread API. API requests, responses and errors are returned as JSON.
+This document outlines authentication, authorization and resource management for Online Scheduling bookings within the Thread API. API requests, responses and errors are returned as JSON.
 
 # Authentication
 
@@ -48,8 +48,8 @@ Many resources are available without special authorization. Resources marked wit
 You must replace <code>superlongcharacterstring</code> with your personal API key.
 </aside>
 
-# OpenChair Scheduling API
-The OpenChair Scheduling API centers around `booking` resources. A booking is an opening for an initial consultation.
+# Thread Online Scheduling API
+The Thread Online Scheduling API centers around `booking` resources. A booking is an opening for an initial consultation.
 
 There are two main categories of bookings, bookings and range bookings.   
 
@@ -69,7 +69,7 @@ Booked | The process is complete and the patient has an appointment
 Practices will have <code>bookings</code> or <code>range bookings</code> but not a mix of both.
 </aside>
 
-## Get All OpenChair Practices 🔒
+## Get All Thread Online Scheduling Practices 🔒
 
 ```shell
 curl "https://api.threadcommunication.com/scheduling/practices"
@@ -97,7 +97,7 @@ curl "https://api.threadcommunication.com/scheduling/practices"
 ```
 
 
-This endpoint returns all practices currently using OpenChair Scheduling.
+This endpoint returns all practices currently using Thread Online Scheduling.
 
 ### HTTP Request
 
