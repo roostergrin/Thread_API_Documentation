@@ -57,12 +57,7 @@ You will receive a <code>status: unauthorized</code> response if you are not sco
 </aside>
 
 # Thread Online Scheduling API
-The Thread Online Scheduling API centers around `booking` resources. A booking is an opening for an initial consultation.
-
-There are two main categories of bookings, bookings and range bookings.   
-
-  1. **Booking**: a booking is an opening in the schedule for an initial consultation. When a patient books a booking, they are choosing a real time, e.g. 4:45 PM on Tuesday, and they are expecting an appointment at that exact time. Once a booking is booked, the patient has an appointment.
-  2. **Range Booking**: when a patient books a range booking, they are requesting a consultation within a time range (morning, late morning, early afternoon or late afternoon) and they are expecting the office to get back to them with the exact time of their appointment.
+The Thread Online Scheduling API centers around `booking` resources. A booking is an opening for an initial consultation. When a patient books a booking, they are choosing a real time, e.g. 4:45 PM on Tuesday, and they are expecting an appointment at that exact time. Once a booking is booked, the patient has an appointment.
 
 A booking can have the following states:   
 
@@ -70,12 +65,7 @@ State | Description
 ----- | -----------
 Open| Booking is available
 Pending | Temporarily removes the booking from public view while a patient completes the sign up form
-Reserved | Patient has booked but needs an exact time. Only applies to range bookings
 Booked | The process is complete and the patient has an appointment
-
-<aside class="notice">
-Practices will have <code>bookings</code> or <code>range bookings</code> but not a mix of both.
-</aside>
 
 ## Get All Thread Online Scheduling Practices
 
@@ -126,7 +116,7 @@ This endpoint returns all practices currently using Thread Online Scheduling.
 </aside>
 
 
-## Get All OpenChair Locations
+## Get All Thread Online Scheduling Locations
 
 ```shell
 curl "https://api.threadcommunication.com/scheduling/locations" \
@@ -151,7 +141,7 @@ curl "https://api.threadcommunication.com/scheduling/locations" \
 ],
 ```
 
-This endpoint returns all locations using Thread OpenChair.
+This endpoint returns all locations using Thread Online Scheduling.
 
 ### HTTP Request
 
@@ -181,7 +171,7 @@ curl "https://api.threadcommunication.com/scheduling/practices/[:id]/bookings" \
     "location_id": "4DFDr",
     "start_datetime": "2018-09-22T10:10:00.000-06:00",
     "length": 45,
-    "status": "reserved",
+    "status": "open",
     "doctor_id": "DD3456"
   },
   {
@@ -234,7 +224,7 @@ curl "https://api.threadcommunication.com/scheduling/locations/[:id]/bookings" \
     "location_id": "4DFDr",
     "start_datetime": "2018-09-22T10:10:00.000-06:00",
     "length": 45,
-    "status": "reserved",
+    "status": "open",
     "doctor_id": "DD3456"
   },
   {
@@ -301,7 +291,7 @@ ID | The ID of the booking to retrieve
 curl "https://api.threadcommunication.com/scheduling/bookings" \
   -H "Authorization: access_token" \
   -H "Content-Type: application/json" \
-  -d '{"start": "2018-10-25T16:44:02.722-06:00","status": "pending","recurring": false,"range_booking": false,"length": 60,"location_id": "4DFDr","doctor_id":"DD3456",}' \
+  -d '{"start": "2018-10-25T16:44:02.722-06:00","status": "pending","recurring": false,"length": 60,"location_id": "4DFDr","doctor_id":"DD3456"}' \
   -X POST 
 ```
 
@@ -312,7 +302,6 @@ curl "https://api.threadcommunication.com/scheduling/bookings" \
   "start": "2018-10-25T16:44:02.722-06:00",
   "status": "pending",
   "recurring": false,
-  "range_booking": false,
   "length": 60,
   "location_id": "4DFDr",
   "doctor_id": "DD3456",
@@ -327,7 +316,6 @@ curl "https://api.threadcommunication.com/scheduling/bookings" \
   "status": "pending",
   "length": 60,
   "recurring": false,
-  "range_booking": false,
   "start_datetime": "2018-10-25T16:44:02.722-06:00",
   "location_id": "4DFDr",
   "doctor_id": "DD3456",
@@ -344,17 +332,12 @@ This endpoint creates a booking.
 
 Attribute | Description | Required? | Default
 --------- | ----------- | --------- | ----
-start | Regular booking: IANA datetime. Range booking, one of `early_morning`, `mid_morning`, `afternoon`, `late_afternoon`* | true | N/A
-status | One of `open`, `pending`, `reserved` or `booked`. See [above](#openchair-scheduling-api) for description. | false | pending
+start | IANA datetime | true | N/A
+status | One of `open`, `pending` or `booked`. See [above](#thread-online-scheduling-api) for description. | false | pending
 recurring | True if the booking happens weekly | false | false
-range_booking | True if booking is a range booking* | false | false
 length | The length of the appointment in minutes | false | 60
 location_id | The id of the location where the appointment will take place | true | N/A
 doctor_id | The id of the doctor who will see the patient | true | N/A
-
-<aside class="notice">
-  *See <a href="#openchair-scheduling-api">above</a> for description of bookings vs. range bookings.
-</aside>
 
 
 ## Edit a Booking 
@@ -364,14 +347,14 @@ curl "https://api.threadcommunication.com/scheduling/bookings" \
   -H "Authorization: access_token" \
   -H "Content-Type: application/json" \
   -X PUT \
-  -d '{"status": "reserved"}'
+  -d '{"status": "open"}'
 ```
 
 > The above command expects the body to be formatted like this:
 
 ```json
 {
-  "status": "reserved",
+  "status": "open"
 }
 ```
 
@@ -380,10 +363,9 @@ curl "https://api.threadcommunication.com/scheduling/bookings" \
 ```json
 {
   "id": "2f4Dr",
-  "status": "reserved",
+  "status": "open",
   "length": 60,
   "recurring": false,
-  "range_booking": false,
   "start_datetime": "2018-10-25T16:44:02.722-06:00",
   "location_id": "4DFDr",
   "doctor_id": "DD3456",
@@ -404,17 +386,12 @@ ID | The ID of the booking to edit
 
 Attribute | Description |
 --------- | ----------- | 
-start | Regular booking: IANA datetime. Range booking, one of `early_morning`, `mid_morning`, `afternoon`, `late_afternoon`*
-status | One of `open`, `pending`, `reserved` or `booked`. See [above](#openchair-scheduling-api) for description.
+start | IANA datetime
+status | One of `open`, `pending` or `booked`. See [above](#thread-online-scheduling-api) for description.
 recurring | True if the booking happens weekly
-range_booking | True if booking is a range booking*
 length | The length of the appointment in minutes
 location_id | The id of the location where the appointment will take place
 doctor_id | The id of the doctor who will see the patient
-
-<aside class="notice">
-  *See <a href="#openchair-scheduling-api">above</a> for description of bookings vs. range bookings.
-</aside>
 
 
 ## Delete a Booking 
