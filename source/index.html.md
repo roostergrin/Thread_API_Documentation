@@ -57,12 +57,7 @@ You will receive a <code>status: unauthorized</code> response if you are not sco
 </aside>
 
 # Thread Online Scheduling API
-The Thread Online Scheduling API centers around `booking` resources. A booking is an opening for an initial consultation.
-
-There are two main categories of bookings, bookings and range bookings.   
-
-  1. **Booking**: a booking is an opening in the schedule for an initial consultation. When a patient books a booking, they are choosing a real time, e.g. 4:45 PM on Tuesday, and they are expecting an appointment at that exact time. Once a booking is booked, the patient has an appointment.
-  2. **Range Booking**: when a patient books a range booking, they are requesting a consultation within a time range (morning, late morning, early afternoon or late afternoon) and they are expecting the office to get back to them with the exact time of their appointment.
+The Thread Online Scheduling API centers around `booking` resources. A booking is an opening for an initial consultation. When a patient books a booking, they are choosing a real time, e.g. 4:45 PM on Tuesday, and they are expecting an appointment at that exact time. Once a booking is booked, the patient has an appointment.
 
 A booking can have the following states:   
 
@@ -70,17 +65,12 @@ State | Description
 ----- | -----------
 Open| Booking is available
 Pending | Temporarily removes the booking from public view while a patient completes the sign up form
-Reserved | Patient has booked but needs an exact time. Only applies to range bookings
 Booked | The process is complete and the patient has an appointment
-
-<aside class="notice">
-Practices will have <code>bookings</code> or <code>range bookings</code> but not a mix of both.
-</aside>
 
 ## Get All Thread Online Scheduling Practices
 
 ```shell
-curl "https://api.threadcommunication.com/scheduling/practices"
+curl "https://api.threadcommunication.com/scheduling/practices" \
   -H "Authorization: access_token"
 ```
 
@@ -91,12 +81,22 @@ curl "https://api.threadcommunication.com/scheduling/practices"
   {
     "id": "3rt42",
     "name": "ABC 123 Orthodontics",
-    "location_ids": ["dr556", "rfW2X"]
+    "location_ids": [
+      {
+        "id": "dr556",
+        "name": "Springfield"
+      }
+    ]
   },
  {
     "id": "rtGB2",
     "name": "Acme Orthodontic Group",
-    "location_ids": ["b2rGH", "HK295"]
+    "location_ids": [
+      {
+        "id": "b2rGH",
+        "name": "Lafayette"
+      }
+    ]
   },
   {
     "etc": "etc..."
@@ -116,32 +116,32 @@ This endpoint returns all practices currently using Thread Online Scheduling.
 </aside>
 
 
-## Get All OpenChair Locations
+## Get All Thread Online Scheduling Locations
 
 ```shell
-curl "https://api.threadcommunication.com/scheduling/locations"
+curl "https://api.threadcommunication.com/scheduling/locations" \
   -H "Authorization: access_token"
 ```
 
 > The above command returns JSON structured like this:
 
 ```json
-{
-  "id": "b2rGH",
-  "practice_id": "rtGB2",
-  "name": "Chesterfield",
-  "office_phone": "555 555 5555",
-  "street_address": "1234 Main Street",
-  "city": "New York",
-  "state": "New York",
-  "zip": "12345",
-  "timezone": "America/New_York",
-  "latitude": 26.6545731,
-  "longitude": -80.2043307,
-}
+[
+  {
+    "id": "b2rGH",
+    "name": "Chesterfield",
+    "website": "https://www.abc123ortho.com/",
+    "street_address": "1234 Main Street",
+    "secondary_address": "",
+    "city": "New York",
+    "state": "New York",
+    "zip": "12345",
+    "timezone": "America/New_York",
+  }
+],
 ```
 
-This endpoint returns all locations using Thread OpenChair.
+This endpoint returns all locations using Thread Online Scheduling.
 
 ### HTTP Request
 
@@ -150,7 +150,7 @@ This endpoint returns all locations using Thread OpenChair.
 ## Get All Bookings for a Practice
 
 ```shell
-curl "https://api.threadcommunication.com/scheduling/practices/[:id]/bookings"
+curl "https://api.threadcommunication.com/scheduling/practices/[:id]/bookings" \
   -H "Authorization: access_token"
 ```
 
@@ -160,31 +160,19 @@ curl "https://api.threadcommunication.com/scheduling/practices/[:id]/bookings"
 [
   {
     "id": "2f4Dr",
-    "status": "pending",
-    "length": 60,
-    "recurring": false,
-    "start_datetime": "2018-09-25T16:44:00.000-06:00",
     "location_id": "4DFDr",
-    "doctor_id": "DD3456",
-    "available_appointments": 2,
-    "total_appointments": 3,
-    "updated_at": "2018-10-25T16:44:02.722-06:00",
-    "created_at": "2017-02-23T16:44:02.722-06:00",
-    "range_booking": false
+    "start_datetime": "2018-09-25T16:44:00.000-06:00",
+    "length": 60,
+    "status": "pending",
+    "doctor_id": "DD3456"
   },
   {
     "id": "fdR344",
-    "status": "reserved",
-    "length": 45,
-    "recurring": false,
-    "start_datetime": "2018-09-22T10:10:00.000-06:00",
     "location_id": "4DFDr",
-    "doctor_id": "DD3456",
-    "available_appointments": 2,
-    "total_appointments": 3,
-    "range_booking": false,
-    "updated_at": "2018-10-25T16:44:02.722-06:00",
-    "created_at": "2017-02-23T16:44:02.722-06:00",
+    "start_datetime": "2018-09-22T10:10:00.000-06:00",
+    "length": 45,
+    "status": "open",
+    "doctor_id": "DD3456"
   },
   {
     "etc": "etc..."
@@ -210,12 +198,12 @@ ID | The ID of the practice to retrieve
 
 Parameter | Default | Description
 --------- | ------- | -----------
-status | all | Specify booking of a specific status. For multiple statuses, use multiple status queries with `&` between them.
+status[] | all | Specify booking of a specific status. For multiple statuses, use multiple status queries with `&` between them.
 
 ## Get All Bookings for a Location
 
 ```shell
-curl "https://api.threadcommunication.com/scheduling/locaitons/[:id]/bookings"
+curl "https://api.threadcommunication.com/scheduling/locations/[:id]/bookings" \
   -H "Authorization: access_token"
 ```
 
@@ -225,31 +213,19 @@ curl "https://api.threadcommunication.com/scheduling/locaitons/[:id]/bookings"
 [
   {
     "id": "2f4Dr",
-    "status": "pending",
-    "length": 60,
-    "recurring": false,
-    "start_datetime": "2018-09-25T16:44:00.000-06:00",
     "location_id": "4DFDr",
-    "doctor_id": "DD3456",
-    "available_appointments": 2,
-    "total_appointments": 3,
-    "updated_at": "2018-10-25T16:44:02.722-06:00",
-    "created_at": "2017-02-23T16:44:02.722-06:00",
-    "range_booking": false
+    "start_datetime": "2018-09-25T16:44:00.000-06:00",
+    "length": 60,
+    "status": "pending",
+    "doctor_id": "DD3456"
   },
   {
     "id": "fdR344",
-    "status": "reserved",
-    "length": 45,
-    "recurring": false,
-    "start_datetime": "2018-09-22T10:10:00.000-06:00",
     "location_id": "4DFDr",
-    "doctor_id": "DD3456",
-    "available_appointments": 2,
-    "total_appointments": 3,
-    "range_booking": false,
-    "updated_at": "2018-10-25T16:44:02.722-06:00",
-    "created_at": "2017-02-23T16:44:02.722-06:00",
+    "start_datetime": "2018-09-22T10:10:00.000-06:00",
+    "length": 45,
+    "status": "open",
+    "doctor_id": "DD3456"
   },
   {
     "etc": "etc..."
@@ -275,12 +251,12 @@ ID | The ID of the locations to retrieve
 
 Parameter | Default | Description
 --------- | ------- | -----------
-status | all | Specify booking of a specific status. For multiple statuses use multiple status queries with `&` between them.
+status[] | all | Specify booking of a specific status. For multiple statuses use multiple status queries with `&` between them.
 
 ## Get An Individual Booking
 
 ```shell
-curl "https://api.threadcommunication.com/scheduling/bookings/[:id]"
+curl "https://api.threadcommunication.com/scheduling/bookings/[:id]" \
   -H "Authorization: access_token"
 ```
 
@@ -289,12 +265,11 @@ curl "https://api.threadcommunication.com/scheduling/bookings/[:id]"
 ```json
 {
     "id": "2f4Dr",
-    "status": "pending",
-    "length": 60,
-    "recurring": false,
     "location_id": "4DFDr",
+    "length": 60,
+    "status": "pending",
     "doctor_id": "DD3456", 
-  }
+}
 ```
 
 This endpoint gets an individual booking.
@@ -313,10 +288,10 @@ ID | The ID of the booking to retrieve
 ## Create a Booking 
 
 ```shell
-curl "https://api.threadcommunication.com/scheduling/bookings"
-  -H "Authorization: access_token"
-  -H "Content-Type: application/json"
-  -d '{"start": "2018-10-25T16:44:02.722-06:00","status": "pending","recurring": false,"range_booking": false,"length": 60,"location_id": "4DFDr","doctor_id":"DD3456",}'
+curl "https://api.threadcommunication.com/scheduling/bookings" \
+  -H "Authorization: access_token" \
+  -H "Content-Type: application/json" \
+  -d '{"start": "2018-10-25T16:44:02.722-06:00","status": "pending","recurring": false,"length": 60,"location_id": "4DFDr","doctor_id":"DD3456"}' \
   -X POST 
 ```
 
@@ -327,7 +302,6 @@ curl "https://api.threadcommunication.com/scheduling/bookings"
   "start": "2018-10-25T16:44:02.722-06:00",
   "status": "pending",
   "recurring": false,
-  "range_booking": false,
   "length": 60,
   "location_id": "4DFDr",
   "doctor_id": "DD3456",
@@ -342,7 +316,6 @@ curl "https://api.threadcommunication.com/scheduling/bookings"
   "status": "pending",
   "length": 60,
   "recurring": false,
-  "range_booking": false,
   "start_datetime": "2018-10-25T16:44:02.722-06:00",
   "location_id": "4DFDr",
   "doctor_id": "DD3456",
@@ -359,34 +332,29 @@ This endpoint creates a booking.
 
 Attribute | Description | Required? | Default
 --------- | ----------- | --------- | ----
-start | Regular booking: IANA datetime. Range booking, one of `early_morning`, `mid_morning`, `afternoon`, `late_afternoon`* | true | N/A
-status | One of `open`, `pending`, `reserved` or `booked`. See [above](#openchair-scheduling-api) for description. | false | pending
+start | IANA datetime | true | N/A
+status | One of `open`, `pending` or `booked`. See [above](#thread-online-scheduling-api) for description. | false | pending
 recurring | True if the booking happens weekly | false | false
-range_booking | True if booking is a range booking* | false | false
 length | The length of the appointment in minutes | false | 60
 location_id | The id of the location where the appointment will take place | true | N/A
 doctor_id | The id of the doctor who will see the patient | true | N/A
-
-<aside class="notice">
-  *See <a href="#openchair-scheduling-api">above</a> for description of bookings vs. range bookings.
-</aside>
 
 
 ## Edit a Booking 
 
 ```shell
-curl "https://api.threadcommunication.com/scheduling/bookings"
-  -H "Authorization: access_token"
-  -H "Content-Type: application/json"
-  -X PUT
-  -d '{"status": "reserved"}'
+curl "https://api.threadcommunication.com/scheduling/bookings" \
+  -H "Authorization: access_token" \
+  -H "Content-Type: application/json" \
+  -X PUT \
+  -d '{"status": "open"}'
 ```
 
 > The above command expects the body to be formatted like this:
 
 ```json
 {
-  "status": "reserved",
+  "status": "open"
 }
 ```
 
@@ -395,10 +363,9 @@ curl "https://api.threadcommunication.com/scheduling/bookings"
 ```json
 {
   "id": "2f4Dr",
-  "status": "reserved",
+  "status": "open",
   "length": 60,
   "recurring": false,
-  "range_booking": false,
   "start_datetime": "2018-10-25T16:44:02.722-06:00",
   "location_id": "4DFDr",
   "doctor_id": "DD3456",
@@ -419,24 +386,19 @@ ID | The ID of the booking to edit
 
 Attribute | Description |
 --------- | ----------- | 
-start | Regular booking: IANA datetime. Range booking, one of `early_morning`, `mid_morning`, `afternoon`, `late_afternoon`*
-status | One of `open`, `pending`, `reserved` or `booked`. See [above](#openchair-scheduling-api) for description.
+start | IANA datetime
+status | One of `open`, `pending` or `booked`. See [above](#thread-online-scheduling-api) for description.
 recurring | True if the booking happens weekly
-range_booking | True if booking is a range booking*
 length | The length of the appointment in minutes
 location_id | The id of the location where the appointment will take place
 doctor_id | The id of the doctor who will see the patient
-
-<aside class="notice">
-  *See <a href="#openchair-scheduling-api">above</a> for description of bookings vs. range bookings.
-</aside>
 
 
 ## Delete a Booking 
 
 ```shell
-curl "https://api.threadcommunication.com/scheduling/bookings/[:id]"
-  -H "Authorization: access_token"
+curl "https://api.threadcommunication.com/scheduling/bookings/[:id]" \
+  -H "Authorization: access_token" \
   -X DELETE
 ```
 
