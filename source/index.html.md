@@ -198,7 +198,7 @@ ID | The ID of the practice to retrieve
 
 Parameter | Default | Description
 --------- | ------- | -----------
-status[] | all | Specify booking of a specific status. For multiple statuses, use multiple status queries with `&` between them.
+status[] | open bookings only | Specify booking of a specific status. For multiple statuses, use multiple status queries with `&` between them.
 
 ## Get All Bookings for a Location
 
@@ -251,7 +251,7 @@ ID | The ID of the locations to retrieve
 
 Parameter | Default | Description
 --------- | ------- | -----------
-status[] | all | Specify booking of a specific status. For multiple statuses use multiple status queries with `&` between them.
+status[] | open bookings only | Specify booking of a specific status. For multiple statuses use multiple status queries with `&` between them.
 
 ## Get An Individual Booking
 
