@@ -81,7 +81,7 @@ curl "https://api.threadcommunication.com/scheduling/practices" \
   {
     "id": "3rt42",
     "name": "ABC 123 Orthodontics",
-    "location_ids": [
+    "locations": [
       {
         "id": "dr556",
         "name": "Springfield"
@@ -91,7 +91,7 @@ curl "https://api.threadcommunication.com/scheduling/practices" \
  {
     "id": "rtGB2",
     "name": "Acme Orthodontic Group",
-    "location_ids": [
+    "locations": [
       {
         "id": "b2rGH",
         "name": "Lafayette"
@@ -291,7 +291,7 @@ ID | The ID of the booking to retrieve
 curl "https://api.threadcommunication.com/scheduling/bookings" \
   -H "Authorization: access_token" \
   -H "Content-Type: application/json" \
-  -d '{"start": "2018-10-25T16:44:02.722-06:00","status": "pending","recurring": false,"length": 60,"location_id": "4DFDr","doctor_id":"DD3456"}' \
+  -d '{"start_datetime": "2018-10-25T16:44:02.722-06:00","status": "pending","recurring": false,"length": 60,"location_id": "4DFDr","doctor_id":"DD3456"}' \
   -X POST 
 ```
 
@@ -299,7 +299,7 @@ curl "https://api.threadcommunication.com/scheduling/bookings" \
 
 ```json
 {
-  "start": "2018-10-25T16:44:02.722-06:00",
+  "start_datetime": "2018-10-25T16:44:02.722-06:00",
   "status": "pending",
   "recurring": false,
   "length": 60,
@@ -343,7 +343,7 @@ doctor_id | The id of the doctor who will see the patient | true | N/A
 ## Edit a Booking 
 
 ```shell
-curl "https://api.threadcommunication.com/scheduling/bookings" \
+curl "https://api.threadcommunication.com/scheduling/bookings/[:id]" \
   -H "Authorization: access_token" \
   -H "Content-Type: application/json" \
   -X PUT \
@@ -422,3 +422,115 @@ This endpoint deletes a booking. You can only delete bookings created using your
 Parameter | Description
 --------- | -----------
 ID | The ID of the booking to delete
+
+
+## Create a Patient
+
+```shell
+curl "https://api.threadcommunication.com/scheduling/patients" \
+  -H "Authorization: access_token" \
+  -H "Content-Type: application/json" \
+  -d '{"booking_id": "1234", "first_name": "John", "last_name": "Deere", "guardian_name": "Joe Deere", "phone": "555 555 1234", "email": "john.deere@aol.com", "message": "I was recommended to you by my dentist. She says its time for braces!", "zip_code": "94114" }' \
+  -X POST 
+```
+
+> The above command expects the body to be formatted like this:
+
+```json
+{
+  "booking_id": "1234",
+  "first_name": "John",
+  "last_name": "Deere",
+  "guardian_name": "Joe Deere",
+  "phone": "555 555 1234",
+  "email": "john.deere@aol.com" ,
+  "message": "I was recommended to you by my dentist. She says it's time for braces!",
+  "zip_code": "94114" 
+}
+```
+
+> A succesffuly created patient and appointment will return this success message:
+
+```json
+{
+  "message": "appointment scheduled and patient created"
+}
+```
+
+This endpoint creates a patient from a booking and has the side effect of creating an appointment.
+
+### HTTP Request
+
+`POST https://api.threadcommunication.com/scheduling/patients`
+
+### Body Attributes
+
+Attribute | Description | Required?
+--------- | ----------- | ---------
+booking_id | the id of the booking being booked | true 
+first_name | first name of patient | true
+last_name | last name of patient | true
+guardian_name | the full name of the guardian | false
+phone | phone number | true
+email | email | true
+message | the message the patient wants the doctor to see | false
+zip_code | zip code of the patient | true
+
+
+
+## Poll Patients
+
+```shell
+curl "https://api.threadcommunication.com/scheduling/practice/[:id]/patients?since=2018-11-05T08:15:30-05:00" \
+  -H "Authorization: access_token" \
+```
+
+> It returns JSON structured like this:
+
+```json
+{
+  "id": "2f4Dr",
+  "status": "closed"
+}
+```
+
+This endpoint returns all patient records for a practice. You can specify a `since` query param to only return patients created since a given timestamp.
+
+### HTTP Request
+
+`GET https://api.threadcommunication.com/scheduling/practice/[:id]/patients`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+ID | The ID of the pratice who's patients you wish to query
+
+
+## Poll Appointments
+
+```shell
+curl "https://api.threadcommunication.com/scheduling/practice/[:id]/appointments?since=2018-11-05T08:15:30-05:00" \
+  -H "Authorization: access_token" \
+```
+
+> It returns JSON structured like this:
+
+```json
+{
+  "id": "2f4Dr",
+  "status": "closed"
+}
+```
+
+This endpoint returns all appointments for a practice. You can specify a `since` query param to only return appointments created since a given timestamp.
+
+### HTTP Request
+
+`GET https://api.threadcommunication.com/scheduling/practice/[:id]/appointments`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+ID | The ID of the pratice who's appointments you wish to query
