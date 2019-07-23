@@ -510,7 +510,7 @@ ID | The ID of the pratice who's patients you wish to query
 ## Poll Appointments
 
 ```shell
-curl "https://api.threadcommunication.com/scheduling/practice/[:id]/appointments?since=2018-11-05T08:15:30-05:00" \
+curl "https://api.threadcommunication.com/scheduling/practices/[:id]/appointments?since=2018-11-05T08:15:30-05:00" \
   -H "Authorization: access_token" \
 ```
 
@@ -527,7 +527,7 @@ This endpoint returns all appointments for a practice. You can specify a `since`
 
 ### HTTP Request
 
-`GET https://api.threadcommunication.com/scheduling/practice/[:id]/appointments`
+`GET https://api.threadcommunication.com/scheduling/practices/[:id]/appointments`
 
 ### URL Parameters
 
