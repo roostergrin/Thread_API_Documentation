@@ -488,10 +488,26 @@ curl "https://api.threadcommunication.com/scheduling/practice/[:id]/patients?sin
 > It returns JSON structured like this:
 
 ```json
-{
-  "id": "2f4Dr",
-  "status": "closed"
-}
+[ 
+  {
+    "id": 1245,
+    "booking_id": 597848,
+    "first_name": "Rudy",
+    "last_name": "Schridd",
+    "email": "rudy@gmail.com",
+    "phone": "+15555555555",
+    "message": "Help me make my teeth straight!",
+    "guardian_name": "Randal Schridd",
+    "created_at": "2019-05-04T22:17:39.072Z",
+    "updated_at": "2019-05-04T22:17:39.072Z",
+    "location_id": "W-2",
+    "zip_code": "99999",
+    "dob": "1989-05-18"
+  },
+  {
+    "id": "etc..."
+  }
+]
 ```
 
 This endpoint returns all patient records for a practice. You can specify a `since` query param to only return patients created since a given timestamp.
@@ -517,10 +533,19 @@ curl "https://api.threadcommunication.com/scheduling/practices/[:id]/appointment
 > It returns JSON structured like this:
 
 ```json
-{
-  "id": "2f4Dr",
-  "status": "closed"
-}
+[ 
+  {
+   "id": 1526,
+    "appointment_datetime": "2019-05-09T18:45:00.000Z",
+    "booking_patient_id": 1245,
+    "booking_id": 597848,
+    "created_at": "2019-05-04T22:17:39.082Z",
+    "updated_at": "2019-05-04T22:17:39.088Z"
+  },
+  {
+    "id": "etc..."
+  }
+]
 ```
 
 This endpoint returns all appointments for a practice. You can specify a `since` query param to only return appointments created since a given timestamp.
