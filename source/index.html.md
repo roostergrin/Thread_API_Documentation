@@ -423,6 +423,35 @@ Parameter | Description
 --------- | -----------
 ID | The ID of the booking to delete
 
+## Delete an Appointment
+
+```shell
+curl "https://api.threadcommunication.com/scheduling/appointments/[:id]" \
+  -H "Authorization: access_token" \
+  -X DELETE
+```
+
+> It returns a JSON structured like this:
+
+```json
+{
+  "id": "abcdefg-0a1b2-12345678",
+  "status": "Cancelled"
+}
+```
+
+This endpoint changes the status of an appointment to "cancelled" and sends emails indicating the cancelled appointment to the associated patient and practice. You can only delete appointments created using your API credentials.
+
+### HTTP Request
+
+`DELETE https://api.threadcommunication.com/scheduling/appointments/[:id]`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+ID | The ID of the appointment to delete
+
 
 ## Create a Patient
 
