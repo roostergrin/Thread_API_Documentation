@@ -56,6 +56,87 @@ Different API consumers have different levels of access. Some access levels are 
 You will receive a <code>status: unauthorized</code> response if you are not scoped to the action or resource. If you believe you have reached this message in error, <a href='mailto:info@threadcommunication.com'>please reach out to us.</a>
 </aside>
 
+# Patient Forms API
+Currently the way patient forms work is that each form is assigned to an appointment by way of a GUID. 
+The process for retrieving these forms will be two-fold. First, one will request all forms filled out 
+since a certain date (this will return a list of GUIDs). Second, one will use that GUID to fetch its 
+associated form.
+
+## Get All Form GUIDs Since Date
+
+```shell
+curl "https://api.threadcommunication.com/forms/form_guids?since=2020-06-03T05:00:00.000Z" \
+  -H "Authorization: access_token"
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+    "appointment_guids": [
+        "this_is_a_test_guid",
+        "abc12d3e-d0af-4a22-8816-89397fb340ff"
+    ]
+}
+```
+
+This endpoint will return a list of appointment GUIDs, corresponding to forms completed since the given date.
+
+### HTTP Request
+
+`GET https://api.threadcommunication.com/forms/form_guids`
+
+### Query Parameters
+
+Parameter | Description
+--------- | -----------
+since | The datetime after which all desired forms have been completed. Must be no longer than 1 month ago.
+
+## Get Form By GUID
+
+```shell
+curl "https://api.threadcommunication.com/forms/form?appointment_guid=abc12d3e-d0af-4a22-8816-89397fb340ff" \
+  -H "Authorization: access_token"
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "appointment_guid": "abc12d3e-d0af-4a22-8816-89397fb340ff",
+  "ipv4": "12.345.678.901",
+  "ipv6": "1234:123:123:abc0:12a1:1a11:11a1:a1a",
+  "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5)",
+  "submitted_at": "2020-06-09T16:13:00.000Z",
+  "pdf": {
+      "boundary": null,
+      "preamble": null,
+      "epilogue": null,
+      "charset": "US-ASCII",
+      "part_sort_order": [
+          "text/plain",
+          "text/enriched",
+          "text/html"
+      ],
+      "parts": [],
+      "raw_source": "JVBERi0xLjYKJeLjz9MKNyAwIG9iaiAKPDwK...",
+      "encoding": "base64"
+  }
+}
+```
+
+This endpoint will return a base64 encoded PDF of the requested form, in addition to some associated metadata.
+
+### HTTP Request
+
+`GET https://api.threadcommunication.com/forms/form`
+
+### Query Parameters
+
+Parameter | Description
+--------- | -----------
+appointment_guid | The GUID corresponding to the appointment corresponding to the desired form.
+
 # Thread Online Scheduling API
 The Thread Online Scheduling API centers around `booking` resources. A booking is an opening for an initial consultation. When a patient books a booking, they are choosing a real time, e.g. 4:45 PM on Tuesday, and they are expecting an appointment at that exact time. Once a booking is booked, the patient has an appointment.
 
