@@ -1,0 +1,1064 @@
+
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Thread API</title>
+
+    <style>
+      .highlight table td { padding: 5px; }
+.highlight table pre { margin: 0; }
+.highlight .gh {
+  color: #999999;
+}
+.highlight .sr {
+  color: #f6aa11;
+}
+.highlight .go {
+  color: #888888;
+}
+.highlight .gp {
+  color: #555555;
+}
+.highlight .gs {
+}
+.highlight .gu {
+  color: #aaaaaa;
+}
+.highlight .nb {
+  color: #f6aa11;
+}
+.highlight .cm {
+  color: #75715e;
+}
+.highlight .cp {
+  color: #75715e;
+}
+.highlight .c1 {
+  color: #75715e;
+}
+.highlight .cs {
+  color: #75715e;
+}
+.highlight .c, .highlight .cd {
+  color: #75715e;
+}
+.highlight .err {
+  color: #960050;
+}
+.highlight .gr {
+  color: #960050;
+}
+.highlight .gt {
+  color: #960050;
+}
+.highlight .gd {
+  color: #49483e;
+}
+.highlight .gi {
+  color: #49483e;
+}
+.highlight .ge {
+  color: #49483e;
+}
+.highlight .kc {
+  color: #66d9ef;
+}
+.highlight .kd {
+  color: #66d9ef;
+}
+.highlight .kr {
+  color: #66d9ef;
+}
+.highlight .no {
+  color: #66d9ef;
+}
+.highlight .kt {
+  color: #66d9ef;
+}
+.highlight .mf {
+  color: #ae81ff;
+}
+.highlight .mh {
+  color: #ae81ff;
+}
+.highlight .il {
+  color: #ae81ff;
+}
+.highlight .mi {
+  color: #ae81ff;
+}
+.highlight .mo {
+  color: #ae81ff;
+}
+.highlight .m, .highlight .mb, .highlight .mx {
+  color: #ae81ff;
+}
+.highlight .sc {
+  color: #ae81ff;
+}
+.highlight .se {
+  color: #ae81ff;
+}
+.highlight .ss {
+  color: #ae81ff;
+}
+.highlight .sd {
+  color: #e6db74;
+}
+.highlight .s2 {
+  color: #e6db74;
+}
+.highlight .sb {
+  color: #e6db74;
+}
+.highlight .sh {
+  color: #e6db74;
+}
+.highlight .si {
+  color: #e6db74;
+}
+.highlight .sx {
+  color: #e6db74;
+}
+.highlight .s1 {
+  color: #e6db74;
+}
+.highlight .s {
+  color: #e6db74;
+}
+.highlight .na {
+  color: #a6e22e;
+}
+.highlight .nc {
+  color: #a6e22e;
+}
+.highlight .nd {
+  color: #a6e22e;
+}
+.highlight .ne {
+  color: #a6e22e;
+}
+.highlight .nf {
+  color: #a6e22e;
+}
+.highlight .vc {
+  color: #ffffff;
+}
+.highlight .nn {
+  color: #ffffff;
+}
+.highlight .nl {
+  color: #ffffff;
+}
+.highlight .ni {
+  color: #ffffff;
+}
+.highlight .bp {
+  color: #ffffff;
+}
+.highlight .vg {
+  color: #ffffff;
+}
+.highlight .vi {
+  color: #ffffff;
+}
+.highlight .nv {
+  color: #ffffff;
+}
+.highlight .w {
+  color: #ffffff;
+}
+.highlight {
+  color: #ffffff;
+}
+.highlight .n, .highlight .py, .highlight .nx {
+  color: #ffffff;
+}
+.highlight .ow {
+  color: #f92672;
+}
+.highlight .nt {
+  color: #f92672;
+}
+.highlight .k, .highlight .kv {
+  color: #f92672;
+}
+.highlight .kn {
+  color: #f92672;
+}
+.highlight .kp {
+  color: #f92672;
+}
+.highlight .o {
+  color: #f92672;
+}
+    </style>
+    <link href="stylesheets/screen.css" rel="stylesheet" media="screen" />
+    <link href="stylesheets/print.css" rel="stylesheet" media="print" />
+      <script src="javascripts/all.js"></script>
+  </head>
+
+  <body class="index" data-languages="[&quot;shell&quot;]">
+    <a href="#" id="nav-button">
+      <span>
+        NAV
+        <img src="images/navbar.png" alt="Navbar" />
+      </span>
+    </a>
+    <div class="toc-wrapper">
+      <img src="images/logo.png" class="logo" alt="Logo" />
+        <div class="lang-selector">
+              <a href="#" data-language-name="shell">shell</a>
+        </div>
+        <div class="search">
+          <input type="text" class="search" id="input-search" placeholder="Search">
+        </div>
+        <ul class="search-results"></ul>
+      <ul id="toc" class="toc-list-h1">
+          <li>
+            <a href="#introduction" class="toc-h1 toc-link" data-title="Introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#authentication" class="toc-h1 toc-link" data-title="Authentication">Authentication</a>
+          </li>
+          <li>
+            <a href="#authorization" class="toc-h1 toc-link" data-title="Authorization">Authorization</a>
+          </li>
+          <li>
+            <a href="#patient-forms-api" class="toc-h1 toc-link" data-title="Patient Forms API">Patient Forms API</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#get-all-form-guids-since-date" class="toc-h2 toc-link" data-title="Get All Form GUIDs Since Date">Get All Form GUIDs Since Date</a>
+                  </li>
+                  <li>
+                    <a href="#get-form-by-guid" class="toc-h2 toc-link" data-title="Get Form By GUID">Get Form By GUID</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#thread-online-scheduling-api" class="toc-h1 toc-link" data-title="Thread Online Scheduling API">Thread Online Scheduling API</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#get-all-thread-online-scheduling-practices" class="toc-h2 toc-link" data-title="Get All Thread Online Scheduling Practices">Get All Thread Online Scheduling Practices</a>
+                  </li>
+                  <li>
+                    <a href="#get-all-thread-online-scheduling-locations" class="toc-h2 toc-link" data-title="Get All Thread Online Scheduling Locations">Get All Thread Online Scheduling Locations</a>
+                  </li>
+                  <li>
+                    <a href="#get-all-bookings-for-a-practice" class="toc-h2 toc-link" data-title="Get All Bookings for a Practice">Get All Bookings for a Practice</a>
+                  </li>
+                  <li>
+                    <a href="#get-all-bookings-for-a-location" class="toc-h2 toc-link" data-title="Get All Bookings for a Location">Get All Bookings for a Location</a>
+                  </li>
+                  <li>
+                    <a href="#get-an-individual-booking" class="toc-h2 toc-link" data-title="Get An Individual Booking">Get An Individual Booking</a>
+                  </li>
+                  <li>
+                    <a href="#create-a-booking" class="toc-h2 toc-link" data-title="Create a Booking">Create a Booking</a>
+                  </li>
+                  <li>
+                    <a href="#edit-a-booking" class="toc-h2 toc-link" data-title="Edit a Booking">Edit a Booking</a>
+                  </li>
+                  <li>
+                    <a href="#delete-a-booking" class="toc-h2 toc-link" data-title="Delete a Booking">Delete a Booking</a>
+                  </li>
+                  <li>
+                    <a href="#delete-an-appointment" class="toc-h2 toc-link" data-title="Delete an Appointment">Delete an Appointment</a>
+                  </li>
+                  <li>
+                    <a href="#create-a-patient" class="toc-h2 toc-link" data-title="Create a Patient">Create a Patient</a>
+                  </li>
+                  <li>
+                    <a href="#poll-patients" class="toc-h2 toc-link" data-title="Poll Patients">Poll Patients</a>
+                  </li>
+                  <li>
+                    <a href="#poll-appointments" class="toc-h2 toc-link" data-title="Poll Appointments">Poll Appointments</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#errors" class="toc-h1 toc-link" data-title="Errors">Errors</a>
+          </li>
+      </ul>
+        <ul class="toc-footer">
+            <li><a href='mailto:info@threadcommunication.com'>Sign Up for a Developer Key</a></li>
+            <li><a href='https://github.com/lord/slate'>Documentation Powered by Slate</a></li>
+        </ul>
+    </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+        <h1 id='introduction'>Introduction</h1>
+<p>Thread API is an interface for developing integrations with Thread products. Currently, Thread Online Scheduling is the only product for which there is a publically available API. This API is organized around <a href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a>. </p>
+
+<p>This document outlines authentication, authorization and resource management for Online Scheduling bookings within the Thread API. API requests, responses and errors are returned as JSON.</p>
+<h1 id='authentication'>Authentication</h1>
+<p>Each API consumer is given a ID and a secret. As the name suggests, the secret must remain a secure secret and should never be delivered to a web client. Combine your ID and secret to create a base64 encoded authorization header and request an authorization JSON web token (JWT). This access token is valid for 1 hour.</p>
+
+<blockquote>
+<p>To authenticate:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code><span class="nb">echo</span> -n <span class="s1">'YOUR_ID:YOUR_SECRET'</span> | openssl base64
+
+curl -X POST <span class="se">\</span>
+  https://threadapi.auth.us-west-2.amazoncognito.com/oauth2/token <span class="se">\</span>
+  -H <span class="s1">'authorization: Basic ***********iMWl0NmY2MnVlZmVtNmFxaG46ajIyYTJ******HRjYm9yZGtucHR0Z2U0azI5cmE3czgwMjZhZ3J***************'</span> <span class="se">\</span>
+  -H <span class="s1">'content-type: application/x-www-form-urlencoded'</span> <span class="se">\</span>
+  -d <span class="s1">'grant_type=client_credentials'</span>
+</code></pre>
+<p>To register your organization as an API consumer and receive your ID and secret, reach out to <a href="mailto:info@threadcommunication.com">info@threadcommunication.com</a>.</p>
+
+<p>If you believe your secret key has been made public or has been compromised, please reach out to <a href="mailto:info@threadcommunication.com">info@threadcommunication.com</a> immediately and we will generate a new key and invalidate your old one.</p>
+<h1 id='authorization'>Authorization</h1>
+<p>Every API call must be accompanied by a valid authorization JWT.</p>
+
+<p><code>Authorization: access_token</code></p>
+
+<aside class="notice">
+You must replace <code>access_token</code> with the access token returned from the step above.
+</aside>
+
+<p>Different API consumers have different levels of access. Some access levels are scoped to HTTP actions (GET and/or POST) and some are scoped to individual resources or groups of resources. Indicate what level of access your application needs when you reach out for API keys. In some cases, access will first need to be authorized by a business agreement with our integration partners.</p>
+
+<aside class="warning">
+You will receive a <code>status: unauthorized</code> response if you are not scoped to the action or resource. If you believe you have reached this message in error, <a href='mailto:info@threadcommunication.com'>please reach out to us.</a>
+</aside>
+<h1 id='patient-forms-api'>Patient Forms API</h1>
+<p>Currently the way patient forms work is that each form is assigned to an appointment by way of a GUID. 
+The process for retrieving these forms will be two-fold. First, one will request all forms filled out 
+since a certain date (this will return a list of GUIDs). Second, one will use that GUID to fetch its 
+associated form.</p>
+<h2 id='get-all-form-guids-since-date'>Get All Form GUIDs Since Date</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.threadcommunication.com/forms/form_guids?since=2020-06-03T05:00:00.000Z"</span> <span class="se">\</span>
+  -H <span class="s2">"Authorization: access_token"</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"appointment_guids"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"this_is_a_test_guid"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"abc12d3e-d0af-4a22-8816-89397fb340ff"</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>This endpoint will return a list of appointment GUIDs, corresponding to forms completed since the given date.</p>
+<h3 id='http-request'>HTTP Request</h3>
+<p><code>GET https://api.threadcommunication.com/forms/form_guids</code></p>
+<h3 id='query-parameters'>Query Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>since</td>
+<td>The datetime after which all desired forms have been completed. Must be no longer than 1 month ago.</td>
+</tr>
+</tbody></table>
+<h2 id='get-form-by-guid'>Get Form By GUID</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.threadcommunication.com/forms/form?appointment_guid=abc12d3e-d0af-4a22-8816-89397fb340ff"</span> <span class="se">\</span>
+  -H <span class="s2">"Authorization: access_token"</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"appointment_guid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"abc12d3e-d0af-4a22-8816-89397fb340ff"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"ipv4"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12.345.678.901"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"ipv6"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1234:123:123:abc0:12a1:1a11:11a1:a1a"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"user_agent"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5)"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"submitted_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2020-06-09T16:13:00.000Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"pdf"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"boundary"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"preamble"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"epilogue"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"charset"</span><span class="p">:</span><span class="w"> </span><span class="s2">"US-ASCII"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"part_sort_order"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="s2">"text/plain"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"text/enriched"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"text/html"</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="s2">"parts"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+      </span><span class="s2">"raw_source"</span><span class="p">:</span><span class="w"> </span><span class="s2">"JVBERi0xLjYKJeLjz9MKNyAwIG9iaiAKPDwK..."</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"encoding"</span><span class="p">:</span><span class="w"> </span><span class="s2">"base64"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>This endpoint will return a base64 encoded PDF of the requested form, in addition to some associated metadata.</p>
+<h3 id='http-request-2'>HTTP Request</h3>
+<p><code>GET https://api.threadcommunication.com/forms/form</code></p>
+<h3 id='query-parameters-2'>Query Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>appointment_guid</td>
+<td>The GUID corresponding to the appointment corresponding to the desired form.</td>
+</tr>
+</tbody></table>
+<h1 id='thread-online-scheduling-api'>Thread Online Scheduling API</h1>
+<p>The Thread Online Scheduling API centers around <code>booking</code> resources. A booking is an opening for an initial consultation. When a patient books a booking, they are choosing a real time, e.g. 4:45 PM on Tuesday, and they are expecting an appointment at that exact time. Once a booking is booked, the patient has an appointment.</p>
+
+<p>A booking can have the following states:   </p>
+
+<table><thead>
+<tr>
+<th>State</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Open</td>
+<td>Booking is available</td>
+</tr>
+<tr>
+<td>Pending</td>
+<td>Temporarily removes the booking from public view while a patient completes the sign up form</td>
+</tr>
+<tr>
+<td>Booked</td>
+<td>The process is complete and the patient has an appointment</td>
+</tr>
+</tbody></table>
+<h2 id='get-all-thread-online-scheduling-practices'>Get All Thread Online Scheduling Practices</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.threadcommunication.com/scheduling/practices"</span> <span class="se">\</span>
+  -H <span class="s2">"Authorization: access_token"</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3rt42"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ABC 123 Orthodontics"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"locations"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dr556"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Springfield"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+ </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rtGB2"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Acme Orthodontic Group"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"locations"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"b2rGH"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Lafayette"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"etc"</span><span class="p">:</span><span class="w"> </span><span class="s2">"etc..."</span><span class="w">
+  </span><span class="p">}</span><span class="w"> 
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+<p>This endpoint returns all practices currently using Thread Online Scheduling.</p>
+<h3 id='http-request-3'>HTTP Request</h3>
+<p><code>GET https://api.threadcommunication.com/scheduling/practices</code></p>
+
+<aside class="success">
+  The resources returned by this route are dictated by the level of access required for each integration partner. For instance, practice management systems will be able to retrieve all resources belonging to their customers. Other integration partners my require authorization on a practice-by-practice basis.
+</aside>
+<h2 id='get-all-thread-online-scheduling-locations'>Get All Thread Online Scheduling Locations</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.threadcommunication.com/scheduling/locations"</span> <span class="se">\</span>
+  -H <span class="s2">"Authorization: access_token"</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"b2rGH"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Chesterfield"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"website"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://www.abc123ortho.com/"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"street_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1234 Main Street"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"secondary_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New York"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New York"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"zip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12345"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"timezone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"America/New_York"</span><span class="p">,</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">],</span><span class="w">
+</span></code></pre>
+<p>This endpoint returns all locations using Thread Online Scheduling.</p>
+<h3 id='http-request-4'>HTTP Request</h3>
+<p><code>GET https://api.threadcommunication.com/scheduling/locations</code></p>
+<h2 id='get-all-bookings-for-a-practice'>Get All Bookings for a Practice</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.threadcommunication.com/scheduling/practices/[:id]/bookings"</span> <span class="se">\</span>
+  -H <span class="s2">"Authorization: access_token"</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2f4Dr"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"location_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4DFDr"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"start_datetime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-09-25T16:44:00.000-06:00"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"length"</span><span class="p">:</span><span class="w"> </span><span class="mi">60</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pending"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"doctor_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DD3456"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fdR344"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"location_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4DFDr"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"start_datetime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-09-22T10:10:00.000-06:00"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"length"</span><span class="p">:</span><span class="w"> </span><span class="mi">45</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"open"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"doctor_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DD3456"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"etc"</span><span class="p">:</span><span class="w"> </span><span class="s2">"etc..."</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+<p>This endpoint gets all bookings for a practice.</p>
+
+<!-- <aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside> -->
+<h3 id='http-request-5'>HTTP Request</h3>
+<p><code>GET https://api.threadcommunication.com/scheduling/practices/[:id]/bookings</code></p>
+<h3 id='url-parameters'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ID</td>
+<td>The ID of the practice to retrieve</td>
+</tr>
+</tbody></table>
+<h3 id='query-parameters-3'>Query Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>status[]</td>
+<td>open bookings only</td>
+<td>Specify booking of a specific status. For multiple statuses, use multiple status queries with <code>&amp;</code> between them.</td>
+</tr>
+</tbody></table>
+<h2 id='get-all-bookings-for-a-location'>Get All Bookings for a Location</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.threadcommunication.com/scheduling/locations/[:id]/bookings"</span> <span class="se">\</span>
+  -H <span class="s2">"Authorization: access_token"</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2f4Dr"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"location_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4DFDr"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"start_datetime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-09-25T16:44:00.000-06:00"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"length"</span><span class="p">:</span><span class="w"> </span><span class="mi">60</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pending"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"doctor_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DD3456"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fdR344"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"location_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4DFDr"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"start_datetime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-09-22T10:10:00.000-06:00"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"length"</span><span class="p">:</span><span class="w"> </span><span class="mi">45</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"open"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"doctor_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DD3456"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"etc"</span><span class="p">:</span><span class="w"> </span><span class="s2">"etc..."</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+<p>This endpoint gets all bookings for an individual location within a practice.</p>
+
+<!-- <aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside> -->
+<h3 id='http-request-6'>HTTP Request</h3>
+<p><code>GET https://api.threadcommunication.com/scheduling/locations/[:id]/bookings</code></p>
+<h3 id='url-parameters-2'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ID</td>
+<td>The ID of the locations to retrieve</td>
+</tr>
+</tbody></table>
+<h3 id='query-parameters-4'>Query Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>status[]</td>
+<td>open bookings only</td>
+<td>Specify booking of a specific status. For multiple statuses use multiple status queries with <code>&amp;</code> between them.</td>
+</tr>
+</tbody></table>
+<h2 id='get-an-individual-booking'>Get An Individual Booking</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.threadcommunication.com/scheduling/bookings/[:id]"</span> <span class="se">\</span>
+  -H <span class="s2">"Authorization: access_token"</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2f4Dr"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"location_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4DFDr"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"length"</span><span class="p">:</span><span class="w"> </span><span class="mi">60</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pending"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"doctor_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DD3456"</span><span class="p">,</span><span class="w"> 
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>This endpoint gets an individual booking.</p>
+<h3 id='http-request-7'>HTTP Request</h3>
+<p><code>GET https://api.threadcommunication.com/scheduling/bookings/[:id]</code></p>
+<h3 id='url-parameters-3'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ID</td>
+<td>The ID of the booking to retrieve</td>
+</tr>
+</tbody></table>
+<h2 id='create-a-booking'>Create a Booking</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.threadcommunication.com/scheduling/bookings"</span> <span class="se">\</span>
+  -H <span class="s2">"Authorization: access_token"</span> <span class="se">\</span>
+  -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+  -d <span class="s1">'{"start_datetime": "2018-10-25T16:44:02.722-06:00","status": "pending","recurring": false,"length": 60,"location_id": "4DFDr","doctor_id":"DD3456"}'</span> <span class="se">\</span>
+  -X POST 
+</code></pre>
+<blockquote>
+<p>The above command expects the body to be formatted like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"start_datetime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-10-25T16:44:02.722-06:00"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pending"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"recurring"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"length"</span><span class="p">:</span><span class="w"> </span><span class="mi">60</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"location_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4DFDr"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"doctor_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DD3456"</span><span class="p">,</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<blockquote>
+<p>And returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2f4Dr"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pending"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"length"</span><span class="p">:</span><span class="w"> </span><span class="mi">60</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"recurring"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"start_datetime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-10-25T16:44:02.722-06:00"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"location_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4DFDr"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"doctor_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DD3456"</span><span class="p">,</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>This endpoint creates a booking.</p>
+<h3 id='http-request-8'>HTTP Request</h3>
+<p><code>POST https://api.threadcommunication.com/scheduling/bookings</code></p>
+<h3 id='body-attributes'>Body Attributes</h3>
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+<th>Required?</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>start</td>
+<td>IANA datetime</td>
+<td>true</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>status</td>
+<td>One of <code>open</code>, <code>pending</code> or <code>booked</code>. See <a href="#thread-online-scheduling-api">above</a> for description.</td>
+<td>false</td>
+<td>pending</td>
+</tr>
+<tr>
+<td>recurring</td>
+<td>True if the booking happens weekly</td>
+<td>false</td>
+<td>false</td>
+</tr>
+<tr>
+<td>length</td>
+<td>The length of the appointment in minutes</td>
+<td>false</td>
+<td>60</td>
+</tr>
+<tr>
+<td>location_id</td>
+<td>The id of the location where the appointment will take place</td>
+<td>true</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>doctor_id</td>
+<td>The id of the doctor who will see the patient</td>
+<td>true</td>
+<td>N/A</td>
+</tr>
+</tbody></table>
+<h2 id='edit-a-booking'>Edit a Booking</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.threadcommunication.com/scheduling/bookings/[:id]"</span> <span class="se">\</span>
+  -H <span class="s2">"Authorization: access_token"</span> <span class="se">\</span>
+  -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+  -X PUT <span class="se">\</span>
+  -d <span class="s1">'{"status": "open"}'</span>
+</code></pre>
+<blockquote>
+<p>The above command expects the body to be formatted like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"open"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<blockquote>
+<p>And returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2f4Dr"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"open"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"length"</span><span class="p">:</span><span class="w"> </span><span class="mi">60</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"recurring"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"start_datetime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-10-25T16:44:02.722-06:00"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"location_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4DFDr"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"doctor_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DD3456"</span><span class="p">,</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>This endpoint edits a booking. You can only edit bookings created using your API keys.</p>
+<h3 id='http-request-9'>HTTP Request</h3>
+<p><code>PUT https://api.threadcommunication.com/scheduling/bookings/[:id]</code></p>
+<h3 id='url-parameters-4'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ID</td>
+<td>The ID of the booking to edit</td>
+</tr>
+</tbody></table>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>start</td>
+<td>IANA datetime</td>
+</tr>
+<tr>
+<td>status</td>
+<td>One of <code>open</code>, <code>pending</code> or <code>booked</code>. See <a href="#thread-online-scheduling-api">above</a> for description.</td>
+</tr>
+<tr>
+<td>recurring</td>
+<td>True if the booking happens weekly</td>
+</tr>
+<tr>
+<td>length</td>
+<td>The length of the appointment in minutes</td>
+</tr>
+<tr>
+<td>location_id</td>
+<td>The id of the location where the appointment will take place</td>
+</tr>
+<tr>
+<td>doctor_id</td>
+<td>The id of the doctor who will see the patient</td>
+</tr>
+</tbody></table>
+<h2 id='delete-a-booking'>Delete a Booking</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.threadcommunication.com/scheduling/bookings/[:id]"</span> <span class="se">\</span>
+  -H <span class="s2">"Authorization: access_token"</span> <span class="se">\</span>
+  -X DELETE
+</code></pre>
+<blockquote>
+<p>It returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2f4Dr"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"closed"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>This endpoint deletes a booking. You can only delete bookings created using your API credentials.</p>
+<h3 id='http-request-10'>HTTP Request</h3>
+<p><code>DELETE https://api.threadcommunication.com/scheduling/bookings/[:id]</code></p>
+<h3 id='url-parameters-5'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ID</td>
+<td>The ID of the booking to delete</td>
+</tr>
+</tbody></table>
+<h2 id='delete-an-appointment'>Delete an Appointment</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.threadcommunication.com/scheduling/appointments/[:id]"</span> <span class="se">\</span>
+  -H <span class="s2">"Authorization: access_token"</span> <span class="se">\</span>
+  -X DELETE
+</code></pre>
+<blockquote>
+<p>It returns a JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"abcdefg-0a1b2-12345678"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Cancelled"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>This endpoint changes the status of an appointment to &quot;cancelled&quot; and sends emails indicating the cancelled appointment to the associated patient and practice. You can only delete appointments created using your API credentials.</p>
+<h3 id='http-request-11'>HTTP Request</h3>
+<p><code>DELETE https://api.threadcommunication.com/scheduling/appointments/[:id]</code></p>
+<h3 id='url-parameters-6'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ID</td>
+<td>The ID of the appointment to delete</td>
+</tr>
+</tbody></table>
+<h2 id='create-a-patient'>Create a Patient</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.threadcommunication.com/scheduling/patients"</span> <span class="se">\</span>
+  -H <span class="s2">"Authorization: access_token"</span> <span class="se">\</span>
+  -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+  -d <span class="s1">'{"booking_id": "1234", "first_name": "John", "last_name": "Deere", "guardian_name": "Joe Deere", "phone": "555 555 1234", "email": "john.deere@aol.com", "message": "I was recommended to you by my dentist. She says its time for braces!", "zip_code": "94114" }'</span> <span class="se">\</span>
+  -X POST 
+</code></pre>
+<blockquote>
+<p>The above command expects the body to be formatted like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"booking_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1234"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"first_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"John"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"last_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Deere"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"guardian_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Joe Deere"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"555 555 1234"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"john.deere@aol.com"</span><span class="w"> </span><span class="p">,</span><span class="w">
+  </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"I was recommended to you by my dentist. She says it's time for braces!"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"zip_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"94114"</span><span class="w"> 
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<blockquote>
+<p>A succesffuly created patient and appointment will return this success message:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"appointment scheduled and patient created"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>This endpoint creates a patient from a booking and has the side effect of creating an appointment.</p>
+<h3 id='http-request-12'>HTTP Request</h3>
+<p><code>POST https://api.threadcommunication.com/scheduling/patients</code></p>
+<h3 id='body-attributes-2'>Body Attributes</h3>
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+<th>Required?</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>booking_id</td>
+<td>the id of the booking being booked</td>
+<td>true</td>
+</tr>
+<tr>
+<td>first_name</td>
+<td>first name of patient</td>
+<td>true</td>
+</tr>
+<tr>
+<td>last_name</td>
+<td>last name of patient</td>
+<td>true</td>
+</tr>
+<tr>
+<td>guardian_name</td>
+<td>the full name of the guardian</td>
+<td>false</td>
+</tr>
+<tr>
+<td>phone</td>
+<td>phone number</td>
+<td>true</td>
+</tr>
+<tr>
+<td>email</td>
+<td>email</td>
+<td>true</td>
+</tr>
+<tr>
+<td>message</td>
+<td>the message the patient wants the doctor to see</td>
+<td>false</td>
+</tr>
+<tr>
+<td>zip_code</td>
+<td>zip code of the patient</td>
+<td>true</td>
+</tr>
+</tbody></table>
+<h2 id='poll-patients'>Poll Patients</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.threadcommunication.com/scheduling/practice/[:id]/patients?since=2018-11-05T08:15:30-05:00"</span> <span class="se">\</span>
+  -H <span class="s2">"Authorization: access_token"</span> <span class="se">\</span>
+</code></pre>
+<blockquote>
+<p>It returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w"> 
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1245</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"booking_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">597848</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"first_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Rudy"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"last_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Schridd"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rudy@gmail.com"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"+15555555555"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Help me make my teeth straight!"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"guardian_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Randal Schridd"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-05-04T22:17:39.072Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-05-04T22:17:39.072Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"location_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"W-2"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"zip_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"99999"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"dob"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1989-05-18"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"etc..."</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+<p>This endpoint returns all patient records for a practice. You can specify a <code>since</code> query param to only return patients created since a given timestamp.</p>
+<h3 id='http-request-13'>HTTP Request</h3>
+<p><code>GET https://api.threadcommunication.com/scheduling/practice/[:id]/patients</code></p>
+<h3 id='url-parameters-7'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ID</td>
+<td>The ID of the pratice who&#39;s patients you wish to query</td>
+</tr>
+</tbody></table>
+<h2 id='poll-appointments'>Poll Appointments</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://api.threadcommunication.com/scheduling/practices/[:id]/appointments?since=2018-11-05T08:15:30-05:00"</span> <span class="se">\</span>
+  -H <span class="s2">"Authorization: access_token"</span> <span class="se">\</span>
+</code></pre>
+<blockquote>
+<p>It returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w"> 
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1526</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"appointment_datetime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-05-09T18:45:00.000Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"booking_patient_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1245</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"booking_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">597848</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-05-04T22:17:39.082Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-05-04T22:17:39.088Z"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"etc..."</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+<p>This endpoint returns all appointments for a practice. You can specify a <code>since</code> query param to only return appointments created since a given timestamp.</p>
+<h3 id='http-request-14'>HTTP Request</h3>
+<p><code>GET https://api.threadcommunication.com/scheduling/practices/[:id]/appointments</code></p>
+<h3 id='url-parameters-8'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ID</td>
+<td>The ID of the pratice who&#39;s appointments you wish to query</td>
+</tr>
+</tbody></table>
+<h1 id='errors'>Errors</h1>
+<p>The Thread API uses the following error codes:</p>
+
+<table><thead>
+<tr>
+<th>Error Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>400</td>
+<td>Bad Request -- Your request is invalid.</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized -- Your API key is wrong.</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden -- The resource requested is hidden for administrators only.</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Not Found -- The specified resource could not be found.</td>
+</tr>
+<tr>
+<td>405</td>
+<td>Method Not Allowed -- You tried to access a resource with an invalid method.</td>
+</tr>
+<tr>
+<td>406</td>
+<td>Not Acceptable -- You requested a format that isn&#39;t json.</td>
+</tr>
+<tr>
+<td>410</td>
+<td>Gone -- The resource requested has been removed from our servers.</td>
+</tr>
+<tr>
+<td>418</td>
+<td>I&#39;m a teapot.</td>
+</tr>
+<tr>
+<td>429</td>
+<td>Too Many Requests -- You&#39;re requesting too many resources! Slow down!</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Internal Server Error -- We had a problem with our server. Try again later.</td>
+</tr>
+<tr>
+<td>503</td>
+<td>Service Unavailable -- We&#39;re temporarily offline for maintenance. Please try again later.</td>
+</tr>
+</tbody></table>
+
+      </div>
+      <div class="dark-box">
+          <div class="lang-selector">
+                <a href="#" data-language-name="shell">shell</a>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>
