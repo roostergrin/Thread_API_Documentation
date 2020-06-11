@@ -13,9 +13,6 @@ phases:
       - echo "Uploading build to S3"
       - aws s3 cp --recursive ./build s3://$S3_BUCKET_NAME/
       - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DIST_ID --paths /index.html
-artifacts:
-  files:
-  base-directory:
 cache:
   paths:
     - node_modules
