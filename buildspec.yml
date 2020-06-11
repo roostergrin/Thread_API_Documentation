@@ -6,6 +6,7 @@ phases:
     commands:
   build:
     commands:
+      - bundle install
       - bundle exec middleman build --clean
   post_build:
     commands:
