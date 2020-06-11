@@ -1,0 +1,21 @@
+version: 0.2
+phases:
+  install:
+    commands:
+  pre_build:
+    commands:
+  build:
+    commands:
+      - ./deploy.sh
+  post_build:
+    commands:
+      - echo "Uploading build to S3"
+      - aws s3 cp --recursive ./build s3://$S3_BUCKET_NAME/
+      - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DIST_ID --paths /index.html
+artifacts:
+  files:
+    - "**/*"
+  base-directory: public
+cache:
+  paths:
+    - node_modules
