@@ -108,6 +108,12 @@ curl "https://api.threadcommunication.com/forms/form?appointment_guid=abc12d3e-d
   "ipv6": "1234:123:123:abc0:12a1:1a11:11a1:a1a",
   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5)",
   "submitted_at": "2020-06-09T16:13:00.000Z",
+  "json" : {
+    "first_name": string,
+    "last_name": string,
+    "dob": string,
+    ...
+  }
   "pdf": {
       "boundary": null,
       "preamble": null,
