@@ -109,10 +109,10 @@ curl "https://api.threadcommunication.com/forms/form?appointment_guid=abc12d3e-d
   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5)",
   "submitted_at": "2020-06-09T16:13:00.000Z",
   "json" : {
-    "first_name": string,
-    "last_name": string,
-    "dob": string,
-    ...
+    "first_name": "name",
+    "last_name": "lastName",
+    "dob": "05/13/1992",
+    "other_fields": "other"
   }
   "pdf": {
       "boundary": null,
