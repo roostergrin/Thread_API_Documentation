@@ -122,7 +122,14 @@ curl "https://api.threadcommunication.com/forms/form?appointment_guid=abc12d3e-d
       "raw_source": "JVBERi0xLjYKJeLjz9MKNyAwIG9iaiAKPDwK...",
       "encoding": "base64"
   },
-  "json": "{\"appointment_guid\":\"43268905430704532\",\"ipv4\":\"99.82.199.26\",\"ipv6\":\"99.82.199.26\",\"user_agent\":\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36\",\"submitted_at\":\"Thursday, August 6, 2020 1:36 PM\",\"accept_consent\":\"yes\",\"first_name\":\"Luke\",\"last_name\":\"Evers\",\"accept_signature_sfs\":{\"form_field_name\":\"accept_signature_sfs\"},\"accept_signature\":{\"form_field_name\":\"accept_signature\"},\"accept_signature_file\":{\"form_field_name\":\"accept_signature_file\"},\"accept_signature_caption\":{\"form_field_name\":\"accept_signature_caption\"},\"accept_date\":\"08/6/2020\",\"responsible_party\":\"self\",\"positive_covid\":\"no\",\"last_covid_date\":{\"form_field_name\":\"last_covid_date\"},\"fever\":\"no\",\"cough\":\"no\",\"breath_issues\":\"no\",\"chest_pain\":\"no\",\"resched_signature_sfs\":{\"form_field_name\":\"resched_signature_sfs\"},\"resched_signature\":{\"form_field_name\":\"resched_signature\"},\"resched_signature_file\":{\"form_field_name\":\"resched_signature_file\"},\"resched_signature_caption\":{\"form_field_name\":\"resched_signature_caption\"},\"resched_date\":\"08/6/2020\",\"Submit\":\"Submit\",\"__submission_number__\":\"2\"}"
+  "json": {
+    "appointment_guid": "43268905430704532",
+    "form_field_1": "...",
+    "form_field_2": "...",
+    "form_field_3": "...",
+    "form_field_4": "...",
+    "form_field_5": "...",
+  }
 }
 ```
 
